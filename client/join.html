@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oyuna Katıl</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Oyuna Katıl</h1>
+
+        <form id="joinForm">
+            <label for="roomCode">Oda Kodu:</label>
+            <input type="text" id="roomCode" required>
+
+            <label for="nickname">Takma Ad:</label>
+            <input type="text" id="nickname" required>
+
+            <button type="submit">Katıl</button>
+        </form>
+
+        <p id="statusMessage"></p>
+    </div>
+
+    <script src="join.js"></script>
+</body>
+</html>
