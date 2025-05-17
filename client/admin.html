@@ -14,6 +14,29 @@
          <button id="createRoomBtn">Oda Oluştur</button>
          <!--oda kodunu gösteren alan-->
          <h2>Oluşturulan Oda Kodu: <span id="roomCodeDisplay">Henüz yok</span></h2>
+         <!-- Soru Ekleme Alanı -->
+         <h2>Soru Ekle</h2>
+         <form id="questionForm">
+             <label for="questionText">Soru:</label><br>
+             <input type="text" id="questionText" required><br><br>
+
+             <label for="optionA">A Şıkkı:</label><br>
+             <input type="text" id="optionA" required><br><br>
+
+             <label for="optionB">B Şıkkı:</label><br>
+             <input type="text" id="optionB" required><br><br>
+
+             <label for="optionC">C Şıkkı:</label><br>
+             <input type="text" id="optionC" required><br><br>
+
+             <label for="optionD">D Şıkkı:</label><br>
+             <input type="text" id="optionD" required><br><br>
+
+             <label for="correctAnswer">Doğru Şık (A/B/C/D):</label><br>
+             <input type="text" id="correctAnswer" maxlength="1" required><br><br>
+
+             <button type="submit">Soruyu Ekle</button>
+         </form>
     </div>
     <script src="admin.js"></script>
 </body>

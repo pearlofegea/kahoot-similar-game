@@ -20,8 +20,8 @@ function showQuestion(data) {
         <div class="question-box">
             <h2>${data.question}</h2>
             <div class="options">
-                ${data.options.map((opt, i) => `
-                    <button class="answer-btn" data-index="${i}">${opt}</button>
+                ${Object.entries(data.options).map(([key, value]) => `
+                    <button class="answer-btn" data-option="${key}">${key}: ${value}</button>
                 `).join('')}
             </div>
         </div>
@@ -30,11 +30,36 @@ function showQuestion(data) {
     // Cevap butonlarına tıklama
     document.querySelectorAll('.answer-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            const answerIndex = btn.dataset.index;
+            const selectedOption = btn.dataset.option;
             socket.emit('submitAnswer', {
                 nickname,
-                answerIndex
+                selectedOption
             });
         });
     });
 }
+
+socket.on('answerResult', ({ isCorrect }) => {
+    const resultBox = document.createElement('div');
+    resultBox.className = 'result-box';
+    resultBox.textContent = isCorrect ? '✅ Doğru cevap!' : '❌ Yanlış cevap!';
+    document.querySelector('.container').appendChild(resultBox);
+});
+
+socket.on('gameOver', ({ message, scores }) => {
+    const container = document.querySelector('.container');
+    const gameOverBox = document.createElement('div');
+    gameOverBox.className = 'game-over-box';
+    gameOverBox.textContent = message;
+    container.appendChild(gameOverBox);
+
+    if (scores) {
+        const scoreBoard = document.createElement('div');
+        scoreBoard.className = 'score-board';
+        scoreBoard.innerHTML = '<h3>Skor Tablosu</h3><ul>' +
+            Object.entries(scores).map(([name, score]) =>
+                `<li>${name}: ${score}</li>`
+            ).join('') + '</ul>';
+        container.appendChild(scoreBoard);
+    }
+});

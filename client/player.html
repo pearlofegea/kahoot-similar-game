@@ -12,6 +12,16 @@
         <h1>Oyuncu Ekranı</h1>
         <h2 id="nicknameDisplay">Katılımcı: ...</h2>
         <p>Oyun başlatılana kadar lütfen bekleyiniz.</p>
+        <!-- Soru Gösterme Alanı -->
+        <div id="questionArea" style="display:none; margin-top: 20px;">
+            <h2 id="questionText"></h2>
+            <ul id="optionsList">
+                <li><button class="optionBtn" data-option="A"></button></li>
+                <li><button class="optionBtn" data-option="B"></button></li>
+                <li><button class="optionBtn" data-option="C"></button></li>
+                <li><button class="optionBtn" data-option="D"></button></li>
+            </ul>
+        </div>
     </div>
 
     <script src="player.js"></script>
