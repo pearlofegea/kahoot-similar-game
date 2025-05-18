@@ -1,3 +1,4 @@
+console.log("player.js yüklendi");
 const socket = io();
 
 const nicknameDisplay = document.getElementById('nicknameDisplay');
@@ -10,6 +11,8 @@ if (nickname) {
 
 // Sunucudan soru gelince ekrana göster
 socket.on('newQuestion', (questionData) => {
+    console.log("SORU GELDİ:", questionData);
+    alert("Soru geldi!");
     showQuestion(questionData);
 });
 

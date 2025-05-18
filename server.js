@@ -45,9 +45,10 @@ io.on('connection', (socket) => {
                 const questions = roomQuestions[roomCode];
                 if (questions && questions.length > 0) {
                     const firstQuestion = questions[0]; // veya Math.floor(Math.random() * questions.length)
+                    console.log(`Oda ${roomCode} için ilk soru gönderiliyor:`, firstQuestion);
                     io.to(roomCode).emit('newQuestion', firstQuestion);
                 } else {
-                    console.log(`Oda ${roomCode} için henüz soru yok.`);
+                    console.log(`Oda ${roomCode} için hiç soru bulunamadı!`);
                 }
             }, 1000);
         } else {

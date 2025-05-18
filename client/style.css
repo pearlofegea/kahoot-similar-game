@@ -8,6 +8,7 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow-y: auto;
 }
 
 .container {
@@ -59,4 +60,9 @@ button:hover {
 #statusMessage {
     margin-top: 15px;
     font-weight: bold;
+}
+
+#createRoomBtn {
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
