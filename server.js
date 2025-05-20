@@ -9,13 +9,34 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-
 const PORT = 3000;
 
 const roomQuestions = {};
 const roomCurrentQuestion = {};
 const socketRoomMap = {};
 const roomScores = {};
+const roomTimeouts = {};
+
+function scheduleNextQuestion(roomCode) {
+    const questions = roomQuestions[roomCode];
+    const currentIndex = roomCurrentQuestion[roomCode];
+
+    if (roomTimeouts[roomCode]) clearTimeout(roomTimeouts[roomCode]);
+
+    roomTimeouts[roomCode] = setTimeout(() => {
+        const nextIndex = currentIndex + 1;
+        if (nextIndex < questions.length) {
+            roomCurrentQuestion[roomCode] = nextIndex;
+            io.to(roomCode).emit('newQuestion', questions[nextIndex]);
+            scheduleNextQuestion(roomCode);
+        } else {
+            io.to(roomCode).emit('gameOver', {
+                message: "Oyun bitti. Tüm sorular gösterildi.",
+                scores: roomScores[roomCode]
+            });
+        }
+    }, 10000); // 10 saniye sonra geç
+}
 
 // Statik dosyaları 'client' klasöründen verelim
 app.use(express.static(path.join(__dirname, 'client')));
@@ -44,9 +65,11 @@ io.on('connection', (socket) => {
             setTimeout(() => {
                 const questions = roomQuestions[roomCode];
                 if (questions && questions.length > 0) {
-                    const firstQuestion = questions[0]; // veya Math.floor(Math.random() * questions.length)
+                    const firstQuestion = questions[0];
                     console.log(`Oda ${roomCode} için ilk soru gönderiliyor:`, firstQuestion);
+                    roomCurrentQuestion[roomCode] = 0;
                     io.to(roomCode).emit('newQuestion', firstQuestion);
+                    scheduleNextQuestion(roomCode); // otomatik geçiş başlat
                 } else {
                     console.log(`Oda ${roomCode} için hiç soru bulunamadı!`);
                 }
@@ -95,16 +118,7 @@ io.on('connection', (socket) => {
         if (isCorrect) roomScores[roomCode][nickname] += 1;
         socket.emit('answerResult', { isCorrect, score: roomScores[roomCode][nickname] });
 
-        const nextIndex = currentIndex + 1;
-        if (nextIndex < questions.length) {
-            roomCurrentQuestion[roomCode] = nextIndex;
-            io.to(roomCode).emit('newQuestion', questions[nextIndex]);
-        } else {
-            io.to(roomCode).emit('gameOver', {
-                message: "Oyun bitti. Tüm sorular gösterildi.",
-                scores: roomScores[roomCode]
-            });
-        }
+        scheduleNextQuestion(roomCode);
     });
 });
 

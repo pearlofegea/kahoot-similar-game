@@ -19,7 +19,7 @@ socket.on('newQuestion', (questionData) => {
 // Soru gösterme fonksiyonu
 function showQuestion(data) {
     const container = document.querySelector('.container');
-    container.innerHTML += `
+    container.innerHTML = `
         <div class="question-box">
             <h2>${data.question}</h2>
             <div class="options">
